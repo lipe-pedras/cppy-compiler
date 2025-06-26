@@ -1,0 +1,54 @@
+// example1.cppy
+
+//////////////////////////////////////////////////////////
+//
+//  CP-Py Language: Simple Calculator
+//  Description: Performs a basic arithmetic operation
+//  based on the 'operation' variable.
+//
+//////////////////////////////////////////////////////////
+
+string operation = "power"; // Can be "add", "subtract", "multiply", "divide", "power"
+float a = 10.5;
+float b = 2.0;
+float result = 0.0;
+bool error = false;
+
+print("--- CP-Py Calculator ---");
+print("Operand A:");
+print(a);
+print("Operand B:");
+print(b);
+print("Selected Operation:");
+print(operation);
+print("------------------------");
+
+if (operation == "add") {
+    result = a + b;
+} elif (operation == "subtract") {
+    result = a - b;
+} elif (operation == "multiply") {
+    result = a * b;
+} elif (operation == "divide") {
+    if (b == 0) {
+        print("Error: Division by zero is not allowed.");
+        error = true;
+    } else {
+        result = a / b;
+    }
+} elif (operation == "power") {
+    result = a ^ b;
+} else {
+    print("Error: Unknown operation selected.");
+    error = true;
+}
+
+// Display the final result only if no error occurred
+if (not error) {
+    print("Result:");
+    print(result);
+} else {
+    print("Calculation could not be completed.");
+}
+
+print("------------------------");
