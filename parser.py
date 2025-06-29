@@ -3,6 +3,9 @@
 import ply.yacc as yacc
 from lexer import tokens
 
+# Create a symbol table (a dictionary) to store variable types
+symbol_table = {}
+
 # Operator precedence
 precedence = (
     ('left', 'OR'),
@@ -31,7 +34,7 @@ def p_statement_list(p):
 
 # Defines a 'statement' as one of the possible command types.
 def p_statement(p):
-    '''statement : assignment_or_declaration
+    '''statement : declaration
                  | conditional_statement
                  | repetition_statement
                  | print_statement
@@ -46,13 +49,35 @@ def p_optional_type(p):
                      | TYPE_CHAR
                      | TYPE_BOOL
                      | empty'''
-    pass
+    # Pass the token type up if it exists
+    if len(p) > 1 and p.slice[1].type != 'empty':
+        p[0] = p.slice[1].type
+    else:
+        p[0] = None
 
-# Rule that combines declaration (with optional type) and assignment.
-def p_assignment_or_declaration(p):
-    'assignment_or_declaration : optional_type IDENTIFIER ASSIGN expression SEMICOLON'
-    # The translation to Python is a simple assignment, ignoring the type.
-    p[0] = f"{p[2]} = {p[4]}\n"
+
+def p_optional_assignment(p):
+    '''optional_assignment : ASSIGN expression
+                           | empty'''
+    if len(p) == 3:
+        p[0] = p[2]  # Return the expression value if assignment exists
+    else:
+        p[0] = 'None' # Default value for declaration-only statements (e.g., int age;)
+
+
+def p_declaration(p):
+    'declaration : optional_type IDENTIFIER optional_assignment SEMICOLON'
+    var_type = p[1]
+    var_name = p[2]
+    var_value = p[3]
+
+    # Populate symbol table ONLY if a type is explicitly declared
+    if var_type is not None:
+        symbol_table[var_name] = var_type
+
+    # Generate Python code
+    p[0] = f"{var_name} = {var_value}\n"
+
 
 def p_conditional_statement(p):
     '''conditional_statement : IF LPAREN expression RPAREN LBRACE statement_list RBRACE elif_list else_optional'''
@@ -83,30 +108,31 @@ def p_print_statement(p):
     'print_statement : PRINT LPAREN expression RPAREN SEMICOLON'
     p[0] = f"print({p[3]}, end='')\n"
 
+
 def p_read_statement(p):
     'read_statement : READ LPAREN identifier_list RPAREN SEMICOLON'
-    # Gera uma linha "variavel = input()" para cada identificador na lista.
-    # p[3] conterá a lista de nomes de variáveis, por exemplo: ['nome', 'idade']
     python_code = ""
     for var_name in p[3]:
-        # Para cada variável, criamos uma solicitação de entrada.
-        # Poderíamos tornar a mensagem mais descritiva, mas por simplicidade usamos input().
-        python_code += f"{var_name} = input()\n"
+        var_type = symbol_table.get(var_name, 'TYPE_STRING') 
+        prompt = f"Enter value for {var_name} ({var_type.replace('TYPE_', '').lower()}): "
+        if var_type == 'TYPE_INT':
+            python_code += f"{var_name} = int(input('{prompt}'))\n"
+        elif var_type == 'TYPE_FLOAT':
+            python_code += f"{var_name} = float(input('{prompt}'))\n"
+        else:
+            python_code += f"{var_name} = input('{prompt}')\n"
+            
     p[0] = python_code
 
-# Nova regra para lidar com uma lista de identificadores separados por vírgula.
-# Esta é uma regra recursiva.
+
+# New rule to handle a list of identifiers separated by a comma.
 def p_identifier_list(p):
     '''identifier_list : identifier_list COMMA IDENTIFIER
                        | IDENTIFIER'''
     if len(p) == 4:
-        # Se for uma lista seguida de vírgula e outro identificador (ex: a, b)
-        # p[1] é a lista anterior, p[3] é o novo identificador
-        p[0] = p[1] + [p[3]] # Adiciona o novo identificador à lista
+        p[0] = p[1] + [p[3]]
     else:
-        # Se for apenas um identificador (o primeiro da lista)
-        # p[1] é o identificador
-        p[0] = [p[1]] # Cria uma nova lista com esse identificador
+        p[0] = [p[1]]
 
 
 def p_expression_binop(p):
