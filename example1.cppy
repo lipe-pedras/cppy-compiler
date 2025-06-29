@@ -14,14 +14,14 @@ float b = 2.0;
 float result = 0.0;
 bool error = false;
 
-print("--- CP-Py Calculator ---");
+print("--- CP-Py Calculator ---\n");
 print("Operand A:");
 print(a);
 print("Operand B:");
 print(b);
 print("Selected Operation:");
 print(operation);
-print("------------------------");
+print("------------------------\n");
 
 if (operation == "add") {
     result = a + b;

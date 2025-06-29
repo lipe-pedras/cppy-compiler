@@ -9,6 +9,7 @@ reserved = {
     'else': 'ELSE',
     'while': 'WHILE',
     'print': 'PRINT',
+    'read': 'READ',
     'and': 'AND',
     'or': 'OR',
     'not': 'NOT',
@@ -27,7 +28,7 @@ tokens = [
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER',
     'ASSIGN',
     'EQ', 'NE', 'LT', 'LE', 'GT', 'GE',
-    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON'
+    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA'
 ] + list(reserved.values())
 
 
@@ -49,6 +50,7 @@ t_RPAREN = r'\)'
 t_LBRACE = r'{'
 t_RBRACE = r'}'
 t_SEMICOLON = r';'
+t_COMMA = r','
 
 # Ignore comments (//...) and spaces/tabs
 t_ignore_COMMENT = r'//.*'

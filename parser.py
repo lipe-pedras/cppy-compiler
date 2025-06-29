@@ -34,7 +34,8 @@ def p_statement(p):
     '''statement : assignment_or_declaration
                  | conditional_statement
                  | repetition_statement
-                 | print_statement'''
+                 | print_statement
+                 | read_statement'''
     p[0] = p[1]
 
 # Rule for the optional type specifier.
@@ -80,7 +81,33 @@ def p_repetition_statement(p):
 
 def p_print_statement(p):
     'print_statement : PRINT LPAREN expression RPAREN SEMICOLON'
-    p[0] = f"print({p[3]})\n"
+    p[0] = f"print({p[3]}, end='')\n"
+
+def p_read_statement(p):
+    'read_statement : READ LPAREN identifier_list RPAREN SEMICOLON'
+    # Gera uma linha "variavel = input()" para cada identificador na lista.
+    # p[3] conterá a lista de nomes de variáveis, por exemplo: ['nome', 'idade']
+    python_code = ""
+    for var_name in p[3]:
+        # Para cada variável, criamos uma solicitação de entrada.
+        # Poderíamos tornar a mensagem mais descritiva, mas por simplicidade usamos input().
+        python_code += f"{var_name} = input()\n"
+    p[0] = python_code
+
+# Nova regra para lidar com uma lista de identificadores separados por vírgula.
+# Esta é uma regra recursiva.
+def p_identifier_list(p):
+    '''identifier_list : identifier_list COMMA IDENTIFIER
+                       | IDENTIFIER'''
+    if len(p) == 4:
+        # Se for uma lista seguida de vírgula e outro identificador (ex: a, b)
+        # p[1] é a lista anterior, p[3] é o novo identificador
+        p[0] = p[1] + [p[3]] # Adiciona o novo identificador à lista
+    else:
+        # Se for apenas um identificador (o primeiro da lista)
+        # p[1] é o identificador
+        p[0] = [p[1]] # Cria uma nova lista com esse identificador
+
 
 def p_expression_binop(p):
     '''expression : expression PLUS expression
