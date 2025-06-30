@@ -2,56 +2,57 @@
 
 //////////////////////////////////////////////////////////
 //
-//  CP-Py Language: Student Grade System
-//  Description: Calculates a student's final grade and
-//  status based on tests, assignments, and attendance.
+//  CP-Py Language: Interactive Student Grade System
+//  Description: Reads a student's data and calculates
+//  their final grade and status.
 //
 //////////////////////////////////////////////////////////
 
-string student_name = "Maria";
-float test1_score = 7.5;
-float test2_score = 6.0;
-float assignment_score = 8.5;
-int total_classes = 50;
-int classes_attended = 42;
+string student_name;
+float test1_score;
+float test2_score;
+float assignment_score;
+int classes_attended;
 
-// Define weights for the final grade calculation
+int total_classes = 50;
 float test1_weight = 0.4;
 float test2_weight = 0.4;
 float assignment_weight = 0.2;
-
-print("--- Student Grade Report ---");
-print("Student:");
-print(student_name);
-print("----------------------------");
-
-// Calculate weighted average
-float final_grade = (test1_score * test1_weight) + (test2_score * test2_weight) + (assignment_score * assignment_weight);
-
-// Calculate attendance percentage
-float attendance_rate = (classes_attended * 100) / total_classes;
 float min_attendance_rate = 75.0;
 
-print("Final Grade:");
+print("--- Student Grade System ---\n");
+print("Enter student name:\n");
+read(student_name);
+print("Enter the scores for Test 1, Test 2, and Assignments:\n");
+read(test1_score, test2_score, assignment_score);
+print("Enter the number of classes attended:\n");
+read(classes_attended);
+print("----------------------------\n");
+
+
+float final_grade = (test1_score * test1_weight) + (test2_score * test2_weight) + (assignment_score * assignment_weight);
+float attendance_rate = (classes_attended * 100) / total_classes;
+
+print("Final Grade: ");
 print(final_grade);
-print("Attendance Rate (%):");
+print("\nAttendance Rate (%): ");
 print(attendance_rate);
-print("----------------------------");
-print("Status:");
+print("\n----------------------------\n");
+print("Status: ");
 
 bool passed_by_grade = final_grade >= 7.0;
 bool needs_recovery = final_grade >= 5.0 and final_grade < 7.0;
 bool has_min_attendance = attendance_rate >= min_attendance_rate;
 
 if (not has_min_attendance) {
-    print("Failed due to low attendance.");
+    print("Failed due to low attendance.\n");
 } else {
     if (passed_by_grade) {
-        print("Approved.");
+        print("Approved.\n");
     } elif (needs_recovery) {
-        print("Recovery. Student needs to take a final exam.");
+        print("Recovery. Student needs to take a final exam.\n");
     } else {
-        print("Failed by grade.");
+        print("Failed by grade.\n");
     }
 }
-print("----------------------------");
+print("----------------------------\n");

@@ -2,26 +2,24 @@
 
 //////////////////////////////////////////////////////////
 //
-//  CP-Py Language: Simple Calculator
-//  Description: Performs a basic arithmetic operation
-//  based on the 'operation' variable.
+//  CP-Py Language: Interactive Calculator
+//  Description: Reads an operation and two numbers from
+//  the user to perform a calculation.
 //
 //////////////////////////////////////////////////////////
 
-string operation = "power"; // Can be "add", "subtract", "multiply", "divide", "power"
-float a = 10.5;
-float b = 2.0;
+string operation;
+float a;
+float b;
 float result = 0.0;
 bool error = false;
 
-print("--- CP-Py Calculator ---\n");
-print("Operand A:");
-print(a);
-print("Operand B:");
-print(b);
-print("Selected Operation:");
-print(operation);
-print("------------------------\n");
+print("--- CP-Py Interactive Calculator ---\n");
+print("Enter operation (add, subtract, multiply, divide, power):\n");
+read(operation);
+print("Enter two numbers:\n");
+read(a, b);
+print("------------------------------------\n");
 
 if (operation == "add") {
     result = a + b;
@@ -31,7 +29,7 @@ if (operation == "add") {
     result = a * b;
 } elif (operation == "divide") {
     if (b == 0) {
-        print("Error: Division by zero is not allowed.");
+        print("Error: Division by zero is not allowed.\n");
         error = true;
     } else {
         result = a / b;
@@ -39,16 +37,16 @@ if (operation == "add") {
 } elif (operation == "power") {
     result = a ^ b;
 } else {
-    print("Error: Unknown operation selected.");
+    print("Error: Unknown operation selected.\n");
     error = true;
 }
 
-// Display the final result only if no error occurred
 if (not error) {
-    print("Result:");
+    print("Result: ");
     print(result);
+    print("\n");
 } else {
-    print("Calculation could not be completed.");
+    print("Calculation could not be completed.\n");
 }
 
-print("------------------------");
+print("------------------------------------\n");

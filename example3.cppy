@@ -2,32 +2,29 @@
 
 //////////////////////////////////////////////////////////
 //
-//  CP-Py Language: Fibonacci Sequence Generator
-//  Description: Generates Fibonacci numbers up to a
-//  specified limit.
+//  CP-Py Language: Interactive Fibonacci Sequence
+//  Description: Asks the user for a limit and generates
+//  the Fibonacci sequence up to that number.
 //
 //////////////////////////////////////////////////////////
 
-int limit = 100;
+int limit;
 int a = 0;
 int b = 1;
 
-print("--- Fibonacci Sequence ---");
-print("Generating numbers up to the limit:");
-print(limit);
-print("--------------------------");
+print("--- Fibonacci Sequence Generator ---\n");
+print("Enter the upper limit to generate Fibonacci numbers:\n");
+read(limit);
+print("----------------------------------\n");
 
-// The loop continues as long as the current number 'a' is within the limit
 while (a <= limit) {
     print(a);
+    print(", ");
 
-    // Calculate the next number in the sequence
     int next_fib = a + b;
-
-    // Update variables for the next iteration
     a = b;
     b = next_fib;
 }
 
-print("--------------------------");
-print("Sequence generation complete.");
+print("\n----------------------------------\n");
+print("Sequence generation complete.\n");
