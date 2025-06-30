@@ -12,7 +12,7 @@ The **cppy** language supports:
 -   Logical operators: `and`, `or`, `not`.
 -   Conditional statements: `if`, `elif`, `else`.
 -   Looping statements: `while`.
--   Output command: `print()`.
+-   I/O Commands: `print()` for output and `read()` for input.
 -   Single-line comments: `//`.
 -   Semicolon-terminated statements: `;`.
 
@@ -73,16 +73,125 @@ python test.py
 
 ## Example Programs
 
-The repository includes three sample programs to demonstrate the language's syntax and features.
+The repository includes three sample programs to demonstrate the language's syntax and its new interactive features.
 
-### `example1.cppy`: Simple Calculator
+### `example1.cppy`: Interactive Calculator
 
-This program simulates a basic calculator. It demonstrates the use of multiple `if`/`elif`/`else` for operation selection and handles potential errors like division by zero.
+This program simulates a basic calculator that now reads the desired operation and two numbers directly from the user. It showcases interactive input, type casting (for numbers), and conditional logic.
 
-### `example2.cppy`: Student Grade System
+```cppy
+// example1.cppy
+string operation;
+float a;
+float b;
+float result = 0.0;
+bool error = false;
 
-This example calculates a student's final grade and status based on multiple weighted scores and class attendance. It's a good showcase for complex conditional logic using `and`, `or`, and `not`.
+print("--- CP-Py Interactive Calculator ---\n");
+print("Enter operation (add, subtract, multiply, divide, power):\n");
+read(operation);
+print("Enter two numbers:\n");
+read(a, b);
+print("------------------------------------\n");
 
-### `example3.cppy`: Fibonacci Sequence Generator
+if (operation == "add") {
+    result = a + b;
+} elif (operation == "subtract") {
+    result = a - b;
+} elif (operation == "multiply") {
+    result = a * b;
+} elif (operation == "divide") {
+    if (b == 0) {
+        print("Error: Division by zero is not allowed.\n");
+        error = true;
+    } else {
+        result = a / b;
+    }
+} elif (operation == "power") {
+    result = a ^ b;
+} else {
+    print("Error: Unknown operation selected.\n");
+    error = true;
+}
 
-This program generates and prints the terms of the Fibonacci sequence up to a specified limit. It's an excellent test for the `while` loop and sequential variable updates.
+if (not error) {
+    print("Result: ");
+    print(result);
+    print("\n");
+}
+```
+
+### `example2.cppy`: Interactive Student Grade System
+
+This example prompts the user to enter a student's name, scores, and class attendance, then calculates their final grade and status. It's a good demonstration of reading multiple data types and applying complex logical rules.
+
+```cppy
+// example2.cppy
+string student_name;
+float test1_score;
+float test2_score;
+float assignment_score;
+int classes_attended;
+
+int total_classes = 50;
+float min_attendance_rate = 75.0;
+
+print("--- Student Grade System ---\n");
+print("Enter student name:\n");
+read(student_name);
+print("Enter the scores for Test 1, Test 2, and Assignments:\n");
+read(test1_score, test2_score, assignment_score);
+print("Enter the number of classes attended:\n");
+read(classes_attended);
+print("----------------------------\n");
+
+float final_grade = (test1_score * 0.4) + (test2_score * 0.4) + (assignment_score * 0.2);
+float attendance_rate = (classes_attended * 100) / total_classes;
+
+print("Final Grade: ");
+print(final_grade);
+print("\nAttendance Rate (%): ");
+print(attendance_rate);
+print("\n----------------------------\n");
+print("Status: ");
+
+if (attendance_rate < min_attendance_rate) {
+    print("Failed due to low attendance.\n");
+} else {
+    if (final_grade >= 7.0) {
+        print("Approved.\n");
+    } elif (final_grade >= 5.0) {
+        print("Recovery. Student needs to take a final exam.\n");
+    } else {
+        print("Failed by grade.\n");
+    }
+}
+```
+
+### `example3.cppy`: Interactive Fibonacci Sequence Generator
+
+This program asks the user for an upper limit and then generates all Fibonacci numbers up to that value. It highlights the use of `read()` to control the behavior of a `while` loop.
+
+```cppy
+// example3.cppy
+int limit;
+int a = 0;
+int b = 1;
+
+print("--- Fibonacci Sequence Generator ---\n");
+print("Enter the upper limit to generate Fibonacci numbers:\n");
+read(limit);
+print("----------------------------------\n");
+
+while (a <= limit) {
+    print(a);
+    print(", ");
+
+    int next_fib = a + b;
+    a = b;
+    b = next_fib;
+}
+
+print("\n----------------------------------\n");
+print("Sequence generation complete.\n");
+```
