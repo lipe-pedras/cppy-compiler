@@ -21,11 +21,11 @@ float assignment_weight = 0.2;
 float min_attendance_rate = 75.0;
 
 print("--- Student Grade System ---\n");
-print("Enter student name:\n");
+print("Enter student name: ");
 read(student_name);
-print("Enter the scores for Test 1, Test 2, and Assignments:\n");
+print("Enter the scores for Test 1, Test 2, and Assignments: ");
 read(test1_score, test2_score, assignment_score);
-print("Enter the number of classes attended:\n");
+print("Enter the number of classes attended: ");
 read(classes_attended);
 print("----------------------------\n");
 
@@ -33,10 +33,8 @@ print("----------------------------\n");
 float final_grade = (test1_score * test1_weight) + (test2_score * test2_weight) + (assignment_score * assignment_weight);
 float attendance_rate = (classes_attended * 100) / total_classes;
 
-print("Final Grade: ");
-print(final_grade);
-print("\nAttendance Rate (%): ");
-print(attendance_rate);
+print("Final Grade: ", final_grade);
+print("\nAttendance Rate (%): ", attendance_rate);
 print("\n----------------------------\n");
 print("Status: ");
 

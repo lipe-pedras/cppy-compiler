@@ -19,11 +19,14 @@ print("----------------------------------\n");
 
 while (a <= limit) {
     print(a);
-    print(", ");
 
     int next_fib = a + b;
     a = b;
     b = next_fib;
+
+    if (a <= limit){
+        print(", ");
+    }
 }
 
 print("\n----------------------------------\n");

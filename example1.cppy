@@ -42,9 +42,7 @@ if (operation == "add") {
 }
 
 if (not error) {
-    print("Result: ");
-    print(result);
-    print("\n");
+    print("Result: ", result, "\n");
 } else {
     print("Calculation could not be completed.\n");
 }

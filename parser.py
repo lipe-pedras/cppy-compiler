@@ -105,8 +105,21 @@ def p_repetition_statement(p):
     p[0] = f"while {p[3]}:\n{indent(p[6])}"
 
 def p_print_statement(p):
-    'print_statement : PRINT LPAREN expression RPAREN SEMICOLON'
-    p[0] = f"print({p[3]}, end='')\n"
+    'print_statement : PRINT LPAREN expression_list RPAREN SEMICOLON'
+
+    arguments = ", ".join(p[3])
+    p[0] = f"print({arguments}, sep='', end='')\n"
+
+
+def p_expression_list(p):
+    '''expression_list : expression_list COMMA expression
+                       | expression'''
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    else:
+        p[0] = [p[1]]
+
+
 
 
 def p_read_statement(p):
@@ -114,13 +127,12 @@ def p_read_statement(p):
     python_code = ""
     for var_name in p[3]:
         var_type = symbol_table.get(var_name, 'TYPE_STRING') 
-        prompt = f"Enter value for {var_name} ({var_type.replace('TYPE_', '').lower()}): "
         if var_type == 'TYPE_INT':
-            python_code += f"{var_name} = int(input('{prompt}'))\n"
+            python_code += f"{var_name} = int(input())\n"
         elif var_type == 'TYPE_FLOAT':
-            python_code += f"{var_name} = float(input('{prompt}'))\n"
+            python_code += f"{var_name} = float(input())\n"
         else:
-            python_code += f"{var_name} = input('{prompt}')\n"
+            python_code += f"{var_name} = input()\n"
             
     p[0] = python_code
 
